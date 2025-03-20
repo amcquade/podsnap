@@ -1,10 +1,6 @@
 <?php
-header('Content-Type: application/json');
 
-if (!isset($_POST['query'])) {
-    echo '<p class="text-red-500">No query provided.</p>';
-    exit;
-}
+header('Content-Type: application/json');
 
 $maxResults = 10;
 
@@ -26,13 +22,16 @@ $headers = [
     "Authorization: $hash"
   ];
 
-$query = urlencode($_POST['query']);
+$query = urlencode('geek news');
 $api_url = "https://api.podcastindex.org/api/1.0/search/byterm?q={$query}&max={$maxResults}";
 
 $ch = curl_init();
 curl_setopt($ch, CURLOPT_URL, $api_url);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+
 
 $response = curl_exec($ch);
 if (curl_errno($ch)) {
@@ -49,7 +48,7 @@ if (isset($data['feeds'])) {
         echo '<div class="rounded-lg shadow-md p-4">';
         echo '<h2 class="text-lg font-semibold">' . htmlspecialchars($feed['title']) . '</h2>';
         echo '<p class="text-sm text-gray-600">' . htmlspecialchars($feed['description']) . '</p>';
-        echo '<a href="/app?show_id=' . urlencode($feed['id']) . '" class="text-blue-600 underline mt-2 inline-block">View Episodes</a>';
+        echo '<a href="' . htmlspecialchars($feed['url']) . '" target="_blank" rel="noopener noreferrer" class="text-blue-600 underline mt-2 inline-block">Visit Podcast</a>';
         echo '</div>';
     }
 } else {

@@ -1,5 +1,5 @@
 name: podcast-pwa
-recipe: lamp
+recipe: lamp # todo: try with just 'php'
 config:
   webroot: 'www'
   php: '8.3'
