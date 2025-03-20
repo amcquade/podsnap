@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="theme-color" content="#ffffff">
+        <link rel="manifest" href="/manifest.json">
+        <title>Podcast Search</title>
+        <script src="https://unpkg.com/htmx.org"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    </head>
+    <body class="p-6">
+        <h1 class="text-xl font-bold mb-4">Podcast Search</h1>
+        <form hx-post="/api/podcasts.php" hx-target="#results" hx-swap="innerHTML" class="flex gap-2 mb-6">
+            <input type="text" name="query" placeholder="Search for podcasts..." class="w-full border rounded p-2" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Search</button>
+        </form>
+
+        <div id="results" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Results will be injected here -->
+        </div>
+    </body>
+</html>

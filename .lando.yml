@@ -1,0 +1,15 @@
+name: podcast-pwa
+recipe: lamp
+config:
+  webroot: 'www'
+  php: '8.3'
+  via: apache
+  ssl: false
+  sslExpose: false
+proxy:
+  appserver:
+    - ppwa.lndo.site
+services:
+  appserver:
+    build_as_root:
+      - apt-get update && apt-get install vim -y 
