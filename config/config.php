@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Podcast index developer API creds
+ */
 
-global $ApiKey;
-$ApiKey = 'YOUR API KEY HERE';
+global $ApiKey, $ApiSecret;
+$ApiKey = '';
+$ApiSecret = '';
