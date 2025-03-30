@@ -2,7 +2,7 @@
 header('Content-Type: application/json');
 
 if (!isset($_POST['query'])) {
-    echo '<p class="text-red-500">No query provided.</p>';
+    echo '<div class="alert alert-danger">No query provided.</div>';
     exit;
 }
 
@@ -16,12 +16,14 @@ $data = makeApiCall($uri);
 
 if (isset($data['feeds'])) {
     foreach ($data['feeds'] as $feed) {
-        echo '<div class="rounded-lg shadow-md p-4">';
-        echo '<h2 class="text-lg font-semibold">' . htmlspecialchars($feed['title']) . '</h2>';
-        echo '<p class="text-sm text-gray-600">' . htmlspecialchars($feed['description']) . '</p>';
-        echo '<a href="/app?show_id=' . urlencode($feed['id']) . '" class="text-blue-600 underline mt-2 inline-block">View Episodes</a>';
+        echo '<div class="card mb-3">';
+        echo '<div class="card-body">';
+        echo '<h5 class="card-title">' . htmlspecialchars($feed['title']) . '</h5>';
+        echo '<p class="card-text text-muted">' . htmlspecialchars($feed['description']) . '</p>';
+        echo '<a href="/app?show_id=' . urlencode($feed['id']) . '" class="btn btn-link p-0">View Episodes</a>';
+        echo '</div>';
         echo '</div>';
     }
 } else {
-    echo '<p class="text-gray-500">No podcasts found.</p>';
+    echo '<div class="alert alert-info">No podcasts found.</div>';
 }

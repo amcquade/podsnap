@@ -1,25 +1,26 @@
 <?php
 
 // TODO: make api call to get feed data....
-
+// var_dump($_SERVER);
 
 // build icon paths
-$icon_256 = "/icon-256.png";
-$icon_512 = "/icon-512.png";
+$icon_256 = "icons/pwa-icon-256.png";
+$icon_512 = "icons/pwa-icon-512.png";
 
-$start_url = 'url/appidbs';
+$start_url = "https://" . htmlspecialchars($_SERVER['HTTP_HOST']) . "/app/?show_id=" . intval($_GET['show_id']);
 $header_color = '#ffffff';
 $background_color = '#ffffff';
 $theme_color = '#ffffff';
 
-
-
-$description = "Pod web";
-$name = 'Name of podcast';
+$name = 'Podcast';
+if (isset($_GET['title'])) {
+    $name = htmlspecialchars(urldecode($_GET['title']));
+}
+$description = "Podcast App for the '{$name}' show";
 
 $manifest = [
-    "name" => "$description",
-    "short_name" => "$name - PWA",
+    "name" => "$name",
+    "short_name" => "$name",
     "description" => $description,
     "start_url" => $start_url,
     "display" => "standalone",
@@ -36,22 +37,6 @@ $manifest = [
             "src" => $icon_512,
             "sizes" => "512x512",
             "type" => "image/png"
-        ]
-    ],
-    "screenshots" => [
-        [
-            "src" => $icon_256,
-            "sizes" => "256x256",
-            "type" => "image/png",
-            "form_factor" => "narrow",
-            "label" => "Application Icon"
-        ],
-        [
-            "src" => $icon_512,
-            "sizes" => "512x512",
-            "type" => "image/png",
-            "form_factor" => "wide",
-            "label" => "Application Icon"
         ]
     ]
 ];

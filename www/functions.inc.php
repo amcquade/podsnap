@@ -1,15 +1,17 @@
 <?php
+require_once dirname(__DIR__) . '/config/config.php';
+
 
 function makeApiCall($uri) {
-    require_once dirname(__DIR__) . '/config/config.php';
-
+    global $ApiKey, $ApiSecret;
+    
     if (!isset($ApiKey) || empty($ApiKey) || !isset($ApiSecret) || empty($ApiSecret)) {
-        echo '<p class="text-red-500">Auth Error...</p>';
+        echo '<p class="text-red-500">Auth Error...1</p>';
         exit;
     }
 
     if (empty($uri)) {
-        echo '<p class="text-red-500">Auth Error...</p>';
+        echo '<p class="text-red-500">Auth Error...2</p>';
         exit;
     }
 
