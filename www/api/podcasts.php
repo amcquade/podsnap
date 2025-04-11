@@ -16,11 +16,13 @@ $data = makeApiCall($uri);
 
 if (isset($data['feeds'])) {
     foreach ($data['feeds'] as $feed) {
-        echo '<div class="card mb-3">';
+        echo "<div class='col result-card'>";
+        echo '<div class="card">';
         echo '<div class="card-body">';
         echo '<h5 class="card-title">' . htmlspecialchars($feed['title']) . '</h5>';
         echo '<p class="card-text text-muted">' . htmlspecialchars($feed['description']) . '</p>';
         echo '<a href="/app?show_id=' . urlencode($feed['id']) . '" class="btn btn-link p-0">View Episodes</a>';
+        echo '</div>';
         echo '</div>';
         echo '</div>';
     }
