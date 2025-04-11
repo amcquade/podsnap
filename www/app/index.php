@@ -97,8 +97,11 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
                         title="Cached episodes">
                     <i class="bi bi-download"></i> Offline Episodes
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cachedEpisodesDropdown" id="cachedEpisodesList">
-                    <li><div class="dropdown-item text-muted">Loading cached episodes...</div></li>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cachedEpisodesDropdown"
+                    id="cachedEpisodesList">
+                    <li>
+                        <div class="dropdown-item text-muted">Loading cached episodes...</div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -232,34 +235,31 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
         installButton.classList.add('d-none');
     });
 
-    window.addEventListener('load', () => {
-        if (window.matchMedia('(display-mode: standalone)').matches) {
-            installContainer.style.display = 'none';
-        }
-    });
-
     // Register Service Worker
     if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-            navigator.serviceWorker.register('/sw.js')
+        window.addEventListener('load', function () {
+            navigator.serviceWorker.register('/app/sw.js')
                 .then(registration => {
-                    console.log('SW registered:', registration.scope);
+                    console.log('ServiceWorker registration successful');
 
                     // Track when episodes are played to cache them
-                    document.addEventListener('play', (e) => {
+                    document.addEventListener('play', function (e) {
                         if (e.target.tagName === 'AUDIO') {
                             const audioSrc = e.target.src;
-                            caches.open('podcast-episodes-v1')
-                                .then(cache => fetch(audioSrc)
-                                    .then(response => cache.put(audioSrc, response))
-                                );
+                            if (navigator.serviceWorker.controller) {
+                                navigator.serviceWorker.controller.postMessage({
+                                    type: 'CACHE_AUDIO',
+                                    url: audioSrc
+                                });
+                            }
                         }
                     }, true);
                 })
-                .catch(err => console.log('SW registration failed:', err));
+                .catch(err => console.log('ServiceWorker registration failed: ', err));
         });
     }
 
+    // Function to manually cache an episode
     function cacheEpisode(audioUrl) {
         if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
             navigator.serviceWorker.controller.postMessage({
