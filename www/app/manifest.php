@@ -1,7 +1,5 @@
 <?php
 
-// TODO: make api call to get feed data....
-
 // build icon paths
 $icon_256 = "icons/pwa-icon-256.png";
 $icon_512 = "icons/pwa-icon-512.png";
@@ -36,14 +34,14 @@ $manifest = [
         [
             "src" => $icon_256,
             "sizes" => "256x256",
-            "type" => "image/png"
+            "type" => "image/png",
         ],
         [
             "src" => $icon_512,
             "sizes" => "512x512",
-            "type" => "image/png"
-        ]
-    ]
+            "type" => "image/png",
+        ],
+    ],
 ];
 
 
