@@ -105,11 +105,11 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
                         <a href="#" class="text-decoration-none play-episode">
                             <?php echo htmlspecialchars($episode['title']); ?>
                         </a>
-                        <div class="text-muted small mt-1">
-                            <?php if (!empty($episode['duration'])): ?>
-                                Duration: <?php echo gmdate("H:i:s", $episode['duration']); ?>
-                            <?php endif; ?>
-                        </div>
+<!--                        <div class="text-muted small mt-1">-->
+<!--                            --><?php //if (!empty($episode['duration'])): ?>
+<!--                                Duration: --><?php //echo gmdate("H:i:s", $episode['duration']); ?>
+<!--                            --><?php //endif; ?>
+<!--                        </div>-->
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -158,9 +158,9 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
 </div>
 
 <!-- Install PWA Button -->
-<div id="installContainer">
-    <button id="installButton" class="btn btn-primary btn-lg rounded-pill">
-        Install App
+<div id="installContainer" class="text-center mt-4 mb-4 d-none">
+    <button id="installButton" class="btn btn-primary">
+        <i class="bi bi-download"></i> Install App
     </button>
 </div>
 

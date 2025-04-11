@@ -210,13 +210,12 @@ footer a:hover {
 }
 
 .website-link {
-    color: #FC3C44;
-    background-color: rgba(252, 60, 68, 0.1);
+    color: #2E86AB;
+    background-color: rgba(46, 134, 171, 0.1);
 }
-
 .website-link:hover {
     color: white;
-    background-color: #FC3C44;
+    background-color: #2E86AB;
 }
 
 /* Audio Player */
@@ -233,15 +232,20 @@ footer a:hover {
 
 /* Install Button */
 #installContainer {
-    position: fixed;
-    bottom: 80px;
-    right: 20px;
-    z-index: 1000;
-    display: none;
+    position: static;
+    margin: 1.5rem 0;
+    animation: fadeIn 0.5s ease;
 }
 
 #installButton {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @media (max-width: 768px) {

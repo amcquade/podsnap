@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
     <meta name="theme-color" content="#ffffff">
     <title>Podcast Search</title>
     <script src="https://unpkg.com/htmx.org"></script>
@@ -52,15 +51,9 @@
         }
 
         @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         .container {
@@ -73,17 +66,34 @@
             transition: background-color 0.5s ease;
         }
 
+        /* Card Styles */
         .card {
             background-color: var(--card-bg);
             border: none;
             border-radius: 10px;
             transition: transform 0.3s ease, background-color 0.3s ease;
             height: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            background-color: var(--card-hover);
+        .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            min-height: 190px;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-footer {
+            background: transparent;
+            border-top: none;
+            padding-top: 0;
         }
 
         .card-img-top {
@@ -91,12 +101,29 @@
             border-top-right-radius: 10px;
             height: 150px;
             object-fit: cover;
+            width: 100%;
         }
 
+        .card:hover {
+            transform: translateY(-5px);
+            background-color: var(--card-hover);
+        }
+
+        /* Grid Layout */
+        #results {
+            margin-top: 2rem;
+        }
+
+        .result-card {
+            margin-bottom: 1.5rem;
+        }
+
+        /* Form Styles */
         .form-control {
             background-color: var(--input-bg);
             border: 1px solid rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
+            padding: 0.75rem 1rem;
         }
 
         .dark-mode .form-control {
@@ -139,10 +166,32 @@
             background-color: #4a00e0;
             border: none;
             transition: all 0.3s ease;
+            padding: 0.75rem 1.5rem;
         }
 
         .btn-primary:hover {
             background-color: #2b32b2;
+        }
+
+        /* Text Styles */
+        .card-title {
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-text {
+            font-size: 0.9rem;
+            color: var(--text-color);
+            opacity: 0.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            margin-bottom: 1rem;
         }
 
         /* Responsive adjustments */
@@ -153,6 +202,14 @@
 
             .card-img-top {
                 height: 120px;
+            }
+
+            #results {
+                margin-top: 1.5rem;
+            }
+
+            .result-card {
+                margin-bottom: 1.25rem;
             }
         }
     </style>
@@ -168,8 +225,7 @@
 
     <form hx-post="/api/podcasts.php" hx-target="#results" hx-swap="innerHTML" class="row g-2 mb-4">
         <div class="col">
-            <input type="text" name="query" class="form-control form-control-lg" placeholder="Search for podcasts..."
-                   required>
+            <input type="text" name="query" class="form-control form-control-lg" placeholder="Search for podcasts..." required>
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary btn-lg">
@@ -180,6 +236,17 @@
 
     <div id="results" class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
         <!-- Results will be injected here -->
+        <div class="col result-card">
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-content">
+                        <i class="bi bi-mic" style="font-size: 3rem; color: #6c757d; margin-bottom: 1rem;"></i>
+                        <h5 class="card-title">Search for podcasts</h5>
+                        <p class="card-text">Enter a term above to discover new podcasts</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -214,12 +281,16 @@
     });
 
     // Enhance HTMX requests
-    document.body.addEventListener('htmx:beforeRequest', function () {
-        // Show loading state if needed
-    });
-
-    document.body.addEventListener('htmx:afterRequest', function () {
-        // Handle after request if needed
+    document.body.addEventListener('htmx:beforeRequest', function() {
+        // Show loading state
+        const results = document.getElementById('results');
+        results.innerHTML = `
+                <div class="col-12 text-center py-4">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            `;
     });
 </script>
 </body>
