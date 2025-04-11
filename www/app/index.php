@@ -88,6 +88,19 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
             <button id="installButton" class="podcast-platform-link install-link d-none" title="Install App">
                 <i class="bi bi-download"></i> Install App
             </button>
+
+            <div class="dropdown d-inline-block">
+                <button class="podcast-platform-link cached-link dropdown-toggle"
+                        id="cachedEpisodesDropdown"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        title="Cached episodes">
+                    <i class="bi bi-download"></i> Offline Episodes
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="cachedEpisodesDropdown" id="cachedEpisodesList">
+                    <li><div class="dropdown-item text-muted">Loading cached episodes...</div></li>
+                </ul>
+            </div>
         </div>
 
         <!-- Podcast Description -->
@@ -137,7 +150,7 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
                 <div id="nowPlayingTitle" class="text-truncate">No episode selected</div>
             </div>
             <div class="col-md-6">
-                <audio id="audioPlayer" controls class="w-100"></audio>
+                <audio id="audioPlayer" controls onplay="cacheEpisode(this.src)" class="w-100"></audio>
             </div>
         </div>
     </div>
@@ -224,6 +237,107 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
             installContainer.style.display = 'none';
         }
     });
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js')
+                .then(registration => {
+                    console.log('SW registered:', registration.scope);
+
+                    // Track when episodes are played to cache them
+                    document.addEventListener('play', (e) => {
+                        if (e.target.tagName === 'AUDIO') {
+                            const audioSrc = e.target.src;
+                            caches.open('podcast-episodes-v1')
+                                .then(cache => fetch(audioSrc)
+                                    .then(response => cache.put(audioSrc, response))
+                                );
+                        }
+                    }, true);
+                })
+                .catch(err => console.log('SW registration failed:', err));
+        });
+    }
+
+    function cacheEpisode(audioUrl) {
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            navigator.serviceWorker.controller.postMessage({
+                type: 'CACHE_AUDIO',
+                url: audioUrl
+            });
+        }
+    }
+
+    // Function to populate cached episodes dropdown
+    async function loadCachedEpisodes() {
+        const dropdown = document.getElementById('cachedEpisodesList');
+
+        if (!('caches' in window)) {
+            dropdown.innerHTML = '<li><div class="dropdown-item text-muted">Cache not supported</div></li>';
+            return;
+        }
+
+        try {
+            const cache = await caches.open('podcast-episodes-v1');
+            const requests = await cache.keys();
+            const episodes = requests.filter(req =>
+                req.url.match(/\.(mp3|m4a|ogg|wav)$/i));
+
+            if (episodes.length === 0) {
+                dropdown.innerHTML = '<li><div class="dropdown-item text-muted">No episodes cached yet</div></li>';
+                return;
+            }
+
+            dropdown.innerHTML = '';
+            episodes.forEach(req => {
+                const li = document.createElement('li');
+                const filename = req.url.split('/').pop() || 'Episode';
+                const title = filename.replace(/%20/g, ' ').replace(/\.[^/.]+$/, '');
+
+                li.innerHTML = `
+        <div class="dropdown-item cached-episode-item" onclick="playCachedEpisode('${req.url}')">
+          ${title}
+          <small>${new URL(req.url).hostname}</small>
+        </div>
+      `;
+                dropdown.appendChild(li);
+            });
+        } catch (error) {
+            console.error('Error loading cached episodes:', error);
+            dropdown.innerHTML = '<li><div class="dropdown-item text-muted">Error loading cache</div></li>';
+        }
+    }
+
+    // Function to play cached episodes
+    function playCachedEpisode(url) {
+        const audioPlayer = document.getElementById('audioPlayer');
+        audioPlayer.src = url;
+        audioPlayerContainer.classList.remove('d-none');
+
+        // Update title with filename if we can't get the real title
+        const filename = url.split('/').pop() || 'Cached Episode';
+        const title = filename.replace(/%20/g, ' ').replace(/\.[^/.]+$/, '');
+        nowPlayingTitle.textContent = title;
+
+        // Highlight the dropdown item
+        document.querySelectorAll('.cached-episode-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.textContent.includes(title)) {
+                item.classList.add('active');
+            }
+        });
+
+        audioPlayer.play().catch(e => console.log('Play failed:', e));
+    }
+
+    // Load cached episodes when dropdown is opened
+    document.getElementById('cachedEpisodesDropdown').addEventListener('click', loadCachedEpisodes);
+
+    // Also load when page loads if in PWA mode
+    if (window.matchMedia('(display-mode: standalone)').matches) {
+        loadCachedEpisodes();
+    }
 </script>
 </body>
 </html>

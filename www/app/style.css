@@ -286,3 +286,52 @@ body {
         gap: 10px;
     }
 }
+
+/* Cached Episodes Dropdown */
+.cached-link {
+    color: #6a4c93;
+    background-color: rgba(106, 76, 147, 0.1);
+}
+
+.cached-link:hover {
+    color: white;
+    background-color: #6a4c93;
+}
+
+.dropdown-menu {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.cached-episode-item {
+    white-space: normal;
+    padding: 0.5rem 1rem;
+}
+
+.cached-episode-item small {
+    display: block;
+    font-size: 0.8em;
+    color: #6c757d;
+}
+
+.dark-mode .cached-link {
+    color: #9d7bff;
+    background-color: rgba(157, 123, 255, 0.1);
+}
+
+.dark-mode .cached-link:hover {
+    background-color: #7b5bd6;
+}
+
+.dark-mode .dropdown-menu {
+    background-color: #2c3034;
+    border-color: #444;
+}
+
+.dark-mode .dropdown-item {
+    color: #f8f9fa;
+}
+
+.dark-mode .dropdown-item:hover {
+    background-color: #3d4044;
+}
