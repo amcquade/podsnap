@@ -116,28 +116,48 @@ body {
     font-weight: bold;
 }
 
-/* Footer Styles */
-footer {
-    color: var(--footer-text);
-    padding: 1.5rem 0;
-    margin-top: 2rem;
-}
-
-footer a {
-    color: var(--footer-link);
-    transition: color 0.2s;
-    text-decoration: none;
-}
-
-footer a:hover {
-    color: var(--footer-link-hover);
-}
-
+/* Footer Links */
 .footer-links {
     display: flex;
     gap: 1rem;
     justify-content: center;
+    flex-wrap: wrap;
     margin-bottom: 0.5rem;
+}
+
+.footer-link {
+    color: var(--footer-link);
+    transition: color 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.footer-link:hover {
+    color: var(--footer-link-hover);
+    text-decoration: none;
+}
+
+/* Dark mode footer link colors */
+.dark-mode .footer-link {
+    color: #adb5bd;
+}
+
+.dark-mode .footer-link:hover {
+    color: #0dcaf0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .footer-links {
+        gap: 0.8rem;
+        justify-content: center;
+    }
+
+    .footer-link {
+        font-size: 0.9rem;
+    }
 }
 
 /* Dark Mode Toggle */
@@ -230,17 +250,17 @@ footer a:hover {
     z-index: 999;
 }
 
-/* Install Button */
-#installContainer {
-    position: static;
-    margin: 1.5rem 0;
-    animation: fadeIn 0.5s ease;
+/* Install Link Style - matches other platform links */
+.install-link {
+    color: #6c5ce7;
+    background-color: rgba(108, 92, 231, 0.1);
+    border: none;
+    cursor: pointer;
 }
 
-#installButton {
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    padding: 0.5rem 1.5rem;
-    font-size: 1rem;
+.install-link:hover {
+    color: white;
+    background-color: #6c5ce7;
 }
 
 @keyframes fadeIn {

@@ -50,7 +50,7 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
 
 <div class="container">
     <!-- Podcast Header with Artwork -->
-    <div class="podcast-header p-3">
+    <div class="podcast-header p-3 pb-0">
         <?php if (!empty($showData['feed']['artwork'])): ?>
             <img src="<?php echo $showData['feed']['artwork']; ?>" class="podcast-artwork" alt="Podcast Artwork">
         <?php endif; ?>
@@ -84,6 +84,10 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
                     <i class="bi bi-globe"></i> Website
                 </a>
             <?php endif; ?>
+            <!-- Install App Button - will be hidden if already installed -->
+            <button id="installButton" class="podcast-platform-link install-link d-none" title="Install App">
+                <i class="bi bi-download"></i> Install App
+            </button>
         </div>
 
         <!-- Podcast Description -->
@@ -105,11 +109,11 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
                         <a href="#" class="text-decoration-none play-episode">
                             <?php echo htmlspecialchars($episode['title']); ?>
                         </a>
-<!--                        <div class="text-muted small mt-1">-->
-<!--                            --><?php //if (!empty($episode['duration'])): ?>
-<!--                                Duration: --><?php //echo gmdate("H:i:s", $episode['duration']); ?>
-<!--                            --><?php //endif; ?>
-<!--                        </div>-->
+                        <!--                        <div class="text-muted small mt-1">-->
+                        <!--                            --><?php //if (!empty($episode['duration'])): ?>
+                        <!--                                Duration: --><?php //echo gmdate("H:i:s", $episode['duration']); ?>
+                        <!--                            --><?php //endif; ?>
+                        <!--                        </div>-->
                     </li>
                 <?php endforeach; ?>
             </ul>
@@ -121,19 +125,20 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
 
 <!-- Footer -->
 <footer>
-    <div class="container">
+    <div class="container text-center">
         <div class="row">
-            <div class="col-md-6 text-center text-md-start">
-                <p class="mb-1">© <?php echo date('Y'); ?> <?php echo htmlspecialchars($title); ?></p>
-                <?php if (!empty($showData['feed']['author'])): ?>
-                    <p class="small">Created by <?php echo htmlspecialchars($showData['feed']['author']); ?></p>
-                <?php endif; ?>
-            </div>
-            <div class="col-md-6 text-center text-md-end">
+            <div class="text-md-end">
                 <div class="footer-links">
-
+                    <a href="/" class="footer-link"><i class="bi bi-house"></i> Home</a>
+                    <a href="/about" class="footer-link"><i class="bi bi-info-circle"></i> About</a>
+                    <a href="https://github.com/yourusername/yourrepo" class="footer-link" target="_blank">
+                        <i class="bi bi-github"></i> GitHub
+                    </a>
+                    <a href="https://podcastindex.org/" class="footer-link" target="_blank">
+                        <i class="bi bi-mic"></i> Podcast Index
+                    </a>
+                    <a class="footer-link">v1.0.0</a>
                 </div>
-                <p class="small mb-0"><a href="https://podcastindex.org/">Powered by Podcast Index</a></p>
             </div>
         </div>
     </div>
@@ -155,13 +160,6 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
             </div>
         </div>
     </div>
-</div>
-
-<!-- Install PWA Button -->
-<div id="installContainer" class="text-center mt-4 mb-4 d-none">
-    <button id="installButton" class="btn btn-primary">
-        <i class="bi bi-download"></i> Install App
-    </button>
 </div>
 
 <!-- Bootstrap JS Bundle with Popper -->
@@ -229,24 +227,20 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
     });
 
     audioPlayer.addEventListener('ended', function () {
-        // Optional: Auto-play next episode
+        // TODO: Auto-play next episode
     });
 
     // PWA installation prompt
     let deferredPrompt;
-    const installContainer = document.getElementById('installContainer');
     const installButton = document.getElementById('installButton');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        e.preventDefault();
-        deferredPrompt = e;
-        installContainer.style.display = 'block';
-
-        setTimeout(() => {
-            if (installContainer.style.display !== 'none') {
-                installContainer.style.display = 'none';
-            }
-        }, 30000);
+        // Only show install button if not already installed
+        if (!window.matchMedia('(display-mode: standalone)').matches) {
+            e.preventDefault();
+            deferredPrompt = e;
+            installButton.classList.remove('d-none');
+        }
     });
 
     installButton.addEventListener('click', async () => {
@@ -254,15 +248,20 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
 
         deferredPrompt.prompt();
         const {outcome} = await deferredPrompt.userChoice;
-        console.log(`User response to the install prompt: ${outcome}`);
+        console.log(`User response: ${outcome}`);
         deferredPrompt = null;
-        installContainer.style.display = 'none';
+        installButton.classList.add('d-none');
+    });
+
+    // Hide install button if already installed
+    window.addEventListener('load', () => {
+        if (window.matchMedia('(display-mode: standalone)').matches) {
+            installButton.classList.add('d-none');
+        }
     });
 
     window.addEventListener('appinstalled', () => {
-        installContainer.style.display = 'none';
-        deferredPrompt = null;
-        console.log('PWA was installed');
+        installButton.classList.add('d-none');
     });
 
     window.addEventListener('load', () => {
