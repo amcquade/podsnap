@@ -123,7 +123,7 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
     </div>
 </div>
 
-<?php require_once dirname(dirname(__FILE__)) . 'footer.php'; ?>
+<?php require_once dirname(dirname(__FILE__)) . '/footer.php'; ?>
 
 <!-- Audio Player -->
 <div id="audioPlayerContainer" class="d-none">

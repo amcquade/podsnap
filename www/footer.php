@@ -14,7 +14,7 @@ require_once 'version.php';
             <div class="text-md-end">
                 <div class="footer-links">
                     <a href="/" class="footer-link"><i class="bi bi-house"></i> Home</a>
-                    <a href="/about" class="footer-link"><i class="bi bi-info-circle"></i> About</a>
+                    <a href="/about.php" class="footer-link"><i class="bi bi-info-circle"></i> About</a>
                     <a href="https://github.com/yourusername/yourrepo" class="footer-link" target="_blank">
                         <i class="bi bi-github"></i> GitHub
                     </a>
