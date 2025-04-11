@@ -1,7 +1,6 @@
 <?php
 if (!isset($_GET['show_id'])) {
-    echo '
-<div class="alert alert-danger">No show ID provided.</div>';
+    echo '<div class="alert alert-danger">No show ID provided.</div>';
     exit;
 }
 
@@ -35,7 +34,7 @@ if (!empty($showData['feed']['title'])) {
     <style>
         #installContainer {
             position: fixed;
-            bottom: 20px;
+            bottom: 80px;
             right: 20px;
             z-index: 1000;
             display: none;
@@ -43,6 +42,26 @@ if (!empty($showData['feed']['title'])) {
 
         #installButton {
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #audioPlayerContainer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 10px;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 999;
+        }
+
+        .now-playing {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        body {
+            padding-bottom: 80px; /* Make space for audio player */
         }
     </style>
 </head>
@@ -60,14 +79,18 @@ if (!empty($showData['feed']['title'])) {
         <div class="col-md-8">
             <?php if (isset($data['items'])): ?>
                 <h1 class="h3 mb-3">Episodes for "<?php echo $title; ?>"</h1>
-                <ul class="list-group">
+                <ul class="list-group" id="episodesList">
                     <?php foreach ($data['items'] as $episode): ?>
-                        <li class="list-group-item">
-                            <a href="<?php echo htmlspecialchars($episode['enclosureUrl']); ?>"
-                               target="_blank"
-                               class="text-decoration-none">
+                        <li class="list-group-item episode-item"
+                            data-audio-url="<?php echo htmlspecialchars($episode['enclosureUrl']); ?>">
+                            <a href="#" class="text-decoration-none play-episode">
                                 <?php echo htmlspecialchars($episode['title']); ?>
                             </a>
+                            <div class="text-muted small mt-1">
+                                <?php if (!empty($episode['duration'])): ?>
+                                    Duration: <?php echo gmdate("H:i:s", $episode['duration']); ?>
+                                <?php endif; ?>
+                            </div>
                         </li>
                     <?php endforeach; ?>
                 </ul>
@@ -78,8 +101,26 @@ if (!empty($showData['feed']['title'])) {
     </div>
 </div>
 
+<!-- Audio Player -->
+<div id="audioPlayerContainer" class="d-none">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-1 d-none d-md-block">
+                <img src="<?php echo !empty($showData['feed']['artwork']) ? $showData['feed']['artwork'] : ''; ?>"
+                     id="playerArtwork" class="img-fluid rounded" style="max-height: 50px;">
+            </div>
+            <div class="col-md-5">
+                <div id="nowPlayingTitle" class="text-truncate">No episode selected</div>
+            </div>
+            <div class="col-md-6">
+                <audio id="audioPlayer" controls class="w-100"></audio>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Install PWA Button -->
-<div id="installContainer" class="animate__animated animate__fadeInUp">
+<div id="installContainer">
     <button id="installButton" class="btn btn-primary btn-lg rounded-pill">
         Install App
     </button>
@@ -88,20 +129,54 @@ if (!empty($showData['feed']['title'])) {
 <!-- Bootstrap JS Bundle with Popper -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
+    // Audio Player Functionality
+    const audioPlayer = document.getElementById('audioPlayer');
+    const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+    const nowPlayingTitle = document.getElementById('nowPlayingTitle');
+    const playerArtwork = document.getElementById('playerArtwork');
+    const episodeItems = document.querySelectorAll('.episode-item');
+
+    // Handle episode clicks
+    document.querySelectorAll('.play-episode').forEach(link => {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+            const listItem = this.closest('.episode-item');
+            const audioUrl = listItem.getAttribute('data-audio-url');
+            const episodeTitle = this.textContent;
+
+            // Update player
+            audioPlayer.src = audioUrl;
+            nowPlayingTitle.textContent = episodeTitle;
+            audioPlayerContainer.classList.remove('d-none');
+
+            // Highlight current episode
+            episodeItems.forEach(item => item.classList.remove('now-playing'));
+            listItem.classList.add('now-playing');
+
+            // Play the audio
+            audioPlayer.play().catch(e => console.log('Auto-play prevented:', e));
+        });
+    });
+
+    // Handle audio player events
+    audioPlayer.addEventListener('play', function () {
+        audioPlayerContainer.classList.remove('d-none');
+    });
+
+    audioPlayer.addEventListener('ended', function () {
+        // Optional: Auto-play next episode
+    });
+
     // PWA installation prompt
     let deferredPrompt;
     const installContainer = document.getElementById('installContainer');
     const installButton = document.getElementById('installButton');
 
     window.addEventListener('beforeinstallprompt', (e) => {
-        // Prevent the mini-infobar from appearing on mobile
         e.preventDefault();
-        // Stash the event so it can be triggered later
         deferredPrompt = e;
-        // Show the install button
         installContainer.style.display = 'block';
 
-        // Optionally, hide the button after 30 seconds
         setTimeout(() => {
             if (installContainer.style.display !== 'none') {
                 installContainer.style.display = 'none';
@@ -112,28 +187,19 @@ if (!empty($showData['feed']['title'])) {
     installButton.addEventListener('click', async () => {
         if (!deferredPrompt) return;
 
-        // Show the install prompt
         deferredPrompt.prompt();
-        // Wait for the user to respond to the prompt
         const {outcome} = await deferredPrompt.userChoice;
-        // Optionally, send analytics event with outcome of user choice
         console.log(`User response to the install prompt: ${outcome}`);
-        // We've used the prompt, and can't use it again, throw it away
         deferredPrompt = null;
-        // Hide the install button
         installContainer.style.display = 'none';
     });
 
     window.addEventListener('appinstalled', () => {
-        // Hide the install button
         installContainer.style.display = 'none';
-        // Clear the deferredPrompt so it can be garbage collected
         deferredPrompt = null;
-        // Optionally, send analytics event to indicate successful install
         console.log('PWA was installed');
     });
 
-    // Check if the app is already installed and hide the button if true
     window.addEventListener('load', () => {
         if (window.matchMedia('(display-mode: standalone)').matches) {
             installContainer.style.display = 'none';
