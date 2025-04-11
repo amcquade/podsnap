@@ -1,13 +1,18 @@
 <?php
 
 // TODO: make api call to get feed data....
-// var_dump($_SERVER);
 
 // build icon paths
 $icon_256 = "icons/pwa-icon-256.png";
 $icon_512 = "icons/pwa-icon-512.png";
 
-$start_url = "https://" . htmlspecialchars($_SERVER['HTTP_HOST']) . "/app/?show_id=" . intval($_GET['show_id']);
+$protocol = "https";
+if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+    $protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+} elseif (!empty($_SERVER['REQUEST_SCHEME'])) {
+    $protocol = $_SERVER['REQUEST_SCHEME'];
+}
+$start_url = $protocol . "://" . htmlspecialchars($_SERVER['HTTP_HOST']) . "/app/?show_id=" . intval($_GET['show_id']);
 $header_color = '#ffffff';
 $background_color = '#ffffff';
 $theme_color = '#ffffff';
