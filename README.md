@@ -12,7 +12,6 @@ Web App (PWA).
 - Install any podcast as a standalone PWA
 - Dark/Light mode toggle
 - Responsive design for all devices
-- Offline capabilities for installed podcasts
 
 ## Technologies
 

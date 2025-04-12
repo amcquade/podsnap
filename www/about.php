@@ -62,7 +62,6 @@
                 </p>
                 <ul>
                     <li>One-tap access from your home screen</li>
-                    <li>Works offline for downloaded episodes</li>
                     <li>No app store required</li>
                     <li>Lightweight and fast</li>
                 </ul>

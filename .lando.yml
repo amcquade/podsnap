@@ -1,5 +1,5 @@
-name: podcast-pwa
-recipe: lamp # todo: try with just 'php'
+name: podsnap
+recipe: lamp
 config:
   webroot: 'www'
   php: '8.3'
@@ -8,7 +8,7 @@ config:
   sslExpose: false
 proxy:
   appserver:
-    - ppwa.lndo.site
+    - podsnap.lndo.site
 services:
   appserver:
     build_as_root:
