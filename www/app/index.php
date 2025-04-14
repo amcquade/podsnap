@@ -183,6 +183,13 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
             e.preventDefault();
             deferredPrompt = e;
             installButton.classList.remove('d-none');
+            <?php if (isset($Env) && empty($Env['LOCAL'])): ?>
+            // Track that the app is installable
+            gtag('event', 'pwa_installable', {
+                'event_category': 'PWA',
+                'event_label': 'PWA Install Prompt Displayed'
+            });
+            <?php endif; ?>
         }
     });
 
@@ -192,6 +199,22 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
         deferredPrompt.prompt();
         const {outcome} = await deferredPrompt.userChoice;
         console.log(`User response: ${outcome}`);
+
+        <?php if (isset($Env) && empty($Env['LOCAL'])): ?>
+        if (outcome === 'accepted') {
+            // Track PWA install success
+            gtag('event', 'pwa_installed', {
+                'event_category': 'PWA',
+                'event_label': 'PWA Installed'
+            });
+        } else {
+            // Track PWA install rejection
+            gtag('event', 'pwa_install_rejected', {
+                'event_category': 'PWA',
+                'event_label': 'PWA Install Rejected'
+            });
+        }
+        <?php endif; ?>
         deferredPrompt = null;
         installButton.classList.add('d-none');
     });

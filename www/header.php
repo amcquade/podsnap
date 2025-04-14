@@ -1,7 +1,8 @@
 <?php
 
-global $PageType, $PageName, $show_id, $show_title;
-
+global $PageType, $PageName, $show_id, $show_title, $Env;
+require_once 'functions.inc.php';
+$Env = getEnvArray();
 ?>
 
 <!DOCTYPE html>
@@ -38,10 +39,10 @@ global $PageType, $PageName, $show_id, $show_title;
     <?php
 
     // check if we have the gtag id and make sure were not on local
-    if (!empty($env['GTAG_ID']) && empty($env['LOCAL'])): ?>
+    if (!empty($Env['GTAG_ID']) && empty($Env['LOCAL'])): ?>
 
         <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $env['GTAG_ID']; ?>"></script>
+        <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $Env['GTAG_ID']; ?>"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
 
@@ -51,7 +52,7 @@ global $PageType, $PageName, $show_id, $show_title;
 
             gtag('js', new Date());
 
-            gtag('config', '<?php echo $env['GTAG_ID']; ?>');
+            gtag('config', '<?php echo $Env['GTAG_ID']; ?>');
         </script>
 
     <?php endif; ?>
