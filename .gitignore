@@ -2,3 +2,4 @@ config/*
 config/config.php
 config.php
 .idea
+.env

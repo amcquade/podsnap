@@ -1,9 +1,9 @@
 <?php
-require_once dirname(__DIR__) . '/config/config.php';
-
 
 function makeApiCall($uri) {
-    global $ApiKey, $ApiSecret;
+    $env = parse_ini_file('.env');
+    $ApiKey = $env['PCI_API_KEY'];
+    $ApiSecret = $env['PCI_API_SECRET'];
 
     if (!isset($ApiKey) || empty($ApiKey) || !isset($ApiSecret) || empty($ApiSecret)) {
         echo '<div class="alert alert-danger">Auth Error...1</div>';

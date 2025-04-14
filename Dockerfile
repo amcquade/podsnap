@@ -11,10 +11,6 @@ RUN a2enmod rewrite
 # Copy application code to the Apache document root
 COPY www/ /var/www/html
 
-# Create config folder
-RUN mkdir /var/www/config
-COPY config/config.php /var/www/config
-
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html

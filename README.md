@@ -32,10 +32,9 @@ Web App (PWA).
    cd podsnap
    ```
 
-2. Create a config folder and file:
+2. Environment file (see table below for values):
    ```bash
-   mkdir config
-   touch config.php
+   touch .env
    ```
 
 3. Start Lando:
@@ -118,12 +117,12 @@ Edit `.lando.yml` to customize your Lando setup. Key services include:
 - `appserver`: PHP/Apache service
 - `database`: MySQL database
 
-## Config Variables
+## .env Variables
 
-| Variable       | Description                   |
-|----------------|-------------------------------|
-| `$ApiKey`      | Your Podcast Index API key    |
-| `$ApiSecret`   | Your Podcast Index API secret |
+| Variable         | Description                   |
+|------------------|-------------------------------|
+| `PCI_API_KEY`    | Your Podcast Index API key    |
+| `PCI_API_SECRET` | Your Podcast Index API secret |
 
 ## Contributing
 
