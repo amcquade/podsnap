@@ -183,7 +183,7 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
             e.preventDefault();
             deferredPrompt = e;
             installButton.classList.remove('d-none');
-            <?php if (isset($Env) && empty($Env['LOCAL'])): ?>
+            <?php if (isset($Env) && empty($Env['LOCAL']) && !empty($Env['GTAG_ID'])): ?>
             // Track that the app is installable
             gtag('event', 'pwa_installable', {
                 'event_category': 'PWA',
@@ -200,7 +200,7 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
         const {outcome} = await deferredPrompt.userChoice;
         console.log(`User response: ${outcome}`);
 
-        <?php if (isset($Env) && empty($Env['LOCAL'])): ?>
+        <?php if (isset($Env) && empty($Env['LOCAL']) && !empty($Env['GTAG_ID'])): ?>
         if (outcome === 'accepted') {
             // Track PWA install success
             gtag('event', 'pwa_installed', {
