@@ -36,11 +36,9 @@ global $PageType, $PageName, $show_id, $show_title;
     <link rel="stylesheet" href="style.css">
 
     <?php
-    $host = $_SERVER['HTTP_HOST'];
-    $server_name = $_SERVER['SERVER_NAME'];
 
     // check if we have the gtag id and make sure were not on local
-    if (!empty($env['GTAG_ID']) && !preg_match('/localhost|podsnap\.lndo\.site/', $host) && !preg_match('/localhost|podsnap\.lndo\.site/', $server_name)): ?>
+    if (!empty($env['GTAG_ID']) && empty($env['LOCAL'])): ?>
 
         <!-- Google tag (gtag.js) -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo $env['GTAG_ID']; ?>"></script>
