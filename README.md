@@ -28,8 +28,8 @@ Web App (PWA).
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/podcast-search.git
-   cd podcast-search
+   git clone https://github.com/amcquade/podsnap.git
+   cd podsnap
    ```
 
 2. Create a config folder and file:
