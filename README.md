@@ -1,9 +1,7 @@
-# Podcast Search & PWA Installer
+# PodSnap - Podcast Search & PWA Installer
 
 A podcast search engine powered by Podcast Index that allows users to install any podcast as a standalone Progressive
 Web App (PWA).
-
-![Screenshot](screenshot.png)
 
 ## Features
 
@@ -24,7 +22,6 @@ Web App (PWA).
 ## Prerequisites
 
 - [Lando](https://lando.dev/) for local development
-- [Node.js](https://nodejs.org/) (v14+)
 - Podcast Index API credentials
 
 ## Setup
@@ -57,7 +54,7 @@ Start the development environment:
 lando start
 ```
 
-Access the site at: [https://podcast-search.lndo.site](https://podcast-search.lndo.site)
+Access the site at: [https://podsnap.lndo.site](https://podsnap.lndo.site)
 
 ## Lando Commands
 
@@ -98,44 +95,19 @@ Access the site at: [https://podcast-search.lndo.site](https://podcast-search.ln
   lando logs -s appserver -s database
   ```
 
-### Database
-
-- Access MySQL:
-  ```bash
-  lando mysql
-  ```
-- Import a database dump:
-  ```bash
-  lando db-import database.sql.gz
-  ```
-
 ## Configuration
 
 Edit `.lando.yml` to customize your Lando setup. Key services include:
 
 - `appserver`: PHP/Apache service
 - `database`: MySQL database
-- `node`: Node.js service for frontend assets
 
-## Environment Variables
+## Config Variables
 
-| Variable                   | Description                   |
-|----------------------------|-------------------------------|
-| `PODCAST_INDEX_API_KEY`    | Your Podcast Index API key    |
-| `PODCAST_INDEX_API_SECRET` | Your Podcast Index API secret |
-| `BASE_URL`                 | Base URL for PWA manifests    |
-
-## Deployment
-
-1. Build for production:
-   ```bash
-   lando composer install --no-dev --optimize-autoloader
-   ```
-
-2. Deploy to your hosting provider (ensure PWA requirements are met):
-    - HTTPS is required
-    - Proper MIME types for manifests
-    - Service worker support
+| Variable       | Description                   |
+|----------------|-------------------------------|
+| `$ApiKey`      | Your Podcast Index API key    |
+| `$ApiSecret`   | Your Podcast Index API secret |
 
 ## Contributing
 
@@ -154,3 +126,10 @@ Distributed under the MIT License. See `LICENSE` for more information.
 - [Podcast Index](https://podcastindex.org/) for their open podcast API
 - [Lando](https://lando.dev/) for local development environment
 - [HTMX](https://htmx.org/) for lightweight AJAX functionality
+
+
+### Future features / TODOs
+- setup hosting 
+- played episodes list
+- notifications for new episodes
+- offline playback 
