@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
-    <meta name="theme-color" content="#ffffff">
-    <title>PodSnap - Search</title>
-    <script src="https://unpkg.com/htmx.org"></script>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
-</head>
+<?php
+
+global $PageName, $PageType;
+$PageType = "home";
+$PageName = "PodSnap - Search";
+
+require_once 'header.php';
+
+?>
+
 <body class="p-4">
 <!-- Dark Mode Toggle -->
 <button class="dark-mode-toggle" id="darkModeToggle" title="Toggle Dark Mode">

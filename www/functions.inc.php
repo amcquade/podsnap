@@ -1,6 +1,7 @@
 <?php
 
-function makeApiCall($uri) {
+function getEnvArray() {
+    $env = [];
     if (file_exists('.env')) {
         $env = parse_ini_file('.env');
     } else {
@@ -11,6 +12,13 @@ function makeApiCall($uri) {
 
         $env = parse_ini_file($envPath);
     }
+
+    return $env;
+}
+
+function makeApiCall($uri) {
+
+    $env = getEnvArray();
 
     // get creds from .env
     $ApiKey = $env['PCI_API_KEY'] ?? false;

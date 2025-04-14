@@ -14,33 +14,21 @@ $data = makeApiCall($uri);
 $uri = "podcasts/byfeedid?id={$show_id}&pretty";
 $showData = makeApiCall($uri);
 
-$title = 'Podcast';
+$show_title = 'Podcast';
 if (!empty($showData['feed']['title'])) {
-    $title = htmlspecialchars($showData['feed']['title']);
+    $show_title = htmlspecialchars($showData['feed']['title']);
 }
 
 // Get iTunes ID if available
 $itunesId = !empty($showData['feed']['itunesId']) ? $showData['feed']['itunesId'] : null;
 $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}" : null;
+
+global $PageName, $PageType;
+$PageType = "app";
+$PageName = "$show_title - PodSnap";
+
+require_once dirname(dirname(__FILE__)) . '/header.php';
 ?>
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
-    <meta name="theme-color" content="#ffffff">
-    <link rel="manifest" href="manifest.php?show_id=<?php echo intval($show_id) . "&title=" . urlencode($title); ?>">
-    <title>PodSnap - <?php echo $title; ?> - Podcast</title>
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap Icons -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="style.css">
-</head>
 
 <body class="p-4">
 <!-- Dark Mode Toggle -->
@@ -54,7 +42,7 @@ $applePodcastUrl = $itunesId ? "https://podcasts.apple.com/podcast/id{$itunesId}
         <?php if (!empty($showData['feed']['artwork'])): ?>
             <img src="<?php echo $showData['feed']['artwork']; ?>" class="podcast-artwork" alt="Podcast Artwork">
         <?php endif; ?>
-        <h1 class="podcast-title"><?php echo $title; ?></h1>
+        <h1 class="podcast-title"><?php echo $show_title; ?></h1>
 
         <?php if (!empty($showData['feed']['author'])): ?>
             <div class="podcast-author">

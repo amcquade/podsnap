@@ -242,3 +242,14 @@ body {
 .dark-mode .footer-link:hover {
     color: #0dcaf0;
 }
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #6c5ce7;
+}
+
+.about-section {
+    max-width: 800px;
+    margin: 0 auto;
+}
