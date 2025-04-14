@@ -117,6 +117,18 @@ body {
     color: var(--text-color);
 }
 
+.dark-mode .form-control:focus {
+    background-color: unset;
+}
+
+.dark-mode .card-title {
+    color: white;
+}
+
+.dark-mode .card-text {
+    color: white !important;
+}
+
 /* Dark Mode Toggle */
 .dark-mode-toggle {
     position: fixed;
