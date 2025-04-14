@@ -1,13 +1,20 @@
 <?php
 
 function makeApiCall($uri) {
-    $envPath = dirname(__FILE__) . '/.env';
-    if (!file_exists($envPath)) {
-        $envPath = dirname(dirname(__FILE__)) . '/.env';
+    if (file_exists('.env')) {
+        $env = parse_ini_file('.env');
+    } else {
+        $envPath = dirname(__FILE__) . '/.env';
+        if (!file_exists($envPath)) {
+            $envPath = dirname(dirname(__FILE__)) . '/.env';
+        }
+
+        $env = parse_ini_file($envPath);
     }
-    $env = parse_ini_file($envPath);
-    $ApiKey = $env['PCI_API_KEY'];
-    $ApiSecret = $env['PCI_API_SECRET'];
+
+    // get creds from .env
+    $ApiKey = $env['PCI_API_KEY'] ?? false;
+    $ApiSecret = $env['PCI_API_SECRET'] ?? false;
 
     if (!isset($ApiKey) || empty($ApiKey) || !isset($ApiSecret) || empty($ApiSecret)) {
         echo '<div class="alert alert-danger">Auth Error...1</div>';

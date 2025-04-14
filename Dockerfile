@@ -10,6 +10,7 @@ RUN a2enmod rewrite
 
 # Copy application code to the Apache document root
 COPY www/ /var/www/html
+COPY .env /var/www/html
 
 # Set correct permissions
 RUN chown -R www-data:www-data /var/www/html \

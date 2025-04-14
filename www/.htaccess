@@ -7,6 +7,10 @@
 
 </IfModule>
 
+<Files ".env">
+    Require all denied
+</Files>
+
 # TODO
 # Error documents
 #ErrorDocument 404 /404.html
