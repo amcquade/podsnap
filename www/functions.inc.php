@@ -1,7 +1,11 @@
 <?php
 
 function makeApiCall($uri) {
-    $env = parse_ini_file('.env');
+    $envPath = dirname(__FILE__) . '/.env';
+    if (!file_exists($envPath)) {
+        $envPath = dirname(dirname(__FILE__)) . '/.env';
+    }
+    $env = parse_ini_file($envPath);
     $ApiKey = $env['PCI_API_KEY'];
     $ApiSecret = $env['PCI_API_SECRET'];
 
