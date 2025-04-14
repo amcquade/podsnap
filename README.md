@@ -95,6 +95,22 @@ Access the site at: [https://podsnap.lndo.site](https://podsnap.lndo.site)
   lando logs -s appserver -s database
   ```
 
+## Using docker
+### building and running the image locally
+```bash
+docker build -t my-lando-app .
+docker run -p 8080:80 --name my-lando-container my-lando-app
+```
+### deleting the container
+```bash
+docker stop my-lando-container
+docker rm my-lando-container
+```
+### connect to (running) container for debugging
+```bash
+docker exec -it my-lando-container bash
+```
+
 ## Configuration
 
 Edit `.lando.yml` to customize your Lando setup. Key services include:
