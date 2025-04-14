@@ -20,7 +20,8 @@ require_once 'header.php';
 
     <form hx-post="/api/podcasts.php" hx-target="#results" hx-swap="innerHTML" class="row g-2 mb-4">
         <div class="col">
-            <input type="text" name="query" class="form-control form-control-lg" placeholder="Search for podcasts..." required>
+            <input type="text" name="query" class="form-control form-control-lg" placeholder="Search for podcasts..."
+                   required>
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary btn-lg">
@@ -50,7 +51,7 @@ require_once 'header.php';
 <script src="darkMode.js"></script>
 <script>
     // Enhance HTMX requests
-    document.body.addEventListener('htmx:beforeRequest', function() {
+    document.body.addEventListener('htmx:beforeRequest', function () {
         // Show loading state
         const results = document.getElementById('results');
         results.innerHTML = `
