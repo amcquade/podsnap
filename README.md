@@ -1,7 +1,7 @@
 # PodSnap - Podcast Search & PWA Installer
 
 A podcast search engine powered by Podcast Index that allows users to install any podcast as a standalone Progressive
-Web App (PWA).
+Web App (PWA). [Checkout the live version!](https://podsnap.xyz)
 
 ## Features
 

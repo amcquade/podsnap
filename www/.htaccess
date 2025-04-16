@@ -10,6 +10,7 @@ RewriteEngine On
 # Allow requests from subdomains
 RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.lndo\.site$ [NC]
 RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.onrender\.com$ [NC]
+RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.xyz$ [NC]
 RewriteRule ^ - [E=SUBDOMAIN:%1]
 
 # Redirect to index.php for routing
