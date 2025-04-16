@@ -11,6 +11,13 @@
     Require all denied
 </Files>
 
+<IfModule mod_headers.c>
+    # Enable range requests for audio/video
+    <FilesMatch "\.(mp3|m4a|ogg|wav)$">
+        Header set Accept-Ranges bytes
+    </FilesMatch>
+</IfModule>
+
 # TODO
 # Error documents
 #ErrorDocument 404 /404.html

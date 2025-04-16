@@ -1,6 +1,7 @@
 <?php
 
-function getEnvArray() {
+function getEnvArray()
+{
     $env = [];
     if (file_exists('.env')) {
         $env = parse_ini_file('.env');
@@ -16,7 +17,8 @@ function getEnvArray() {
     return $env;
 }
 
-function makeApiCall($uri) {
+function makeApiCall($uri)
+{
 
     $env = getEnvArray();
 
@@ -64,6 +66,6 @@ function makeApiCall($uri) {
 
     curl_close($ch);
     $data = json_decode($response, true);
-    
+
     return $data;
 }

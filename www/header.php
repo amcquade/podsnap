@@ -23,6 +23,7 @@ $Env = getEnvArray();
               href="manifest.php?show_id=<?php echo intval($show_id) . "&title=" . urlencode($show_title); ?>">
         <link rel="icon"
               href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.core.min.js" integrity="sha512-d00Brs/+XQUUaO0Y9Uo8Vw63o7kS6ZcLM2P++17kALrI8oihAfL4pl1jQObeRBgv06j7xG0GHOhudAW0BdrycA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <?php else: ?>
         <link rel="icon"
               href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎙️</text></svg>">
