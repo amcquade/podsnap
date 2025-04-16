@@ -24,8 +24,8 @@ if (isset($data['feeds'])) {
 
         // create app URL
         $id = urlencode($feed['id']);
-        // $url = "//{$id}.{$_SERVER['HTTP_HOST']}/app/?show_id={$id}";
-        $url = "/app/?show_id={$id}";
+        $url = "//{$id}.{$_SERVER['HTTP_HOST']}/app/?show_id={$id}";
+        // $url = "/app/?show_id={$id}";
         echo '<a href="' . $url . '" class="btn btn-link p-0">View Episodes</a>';
         echo '</div>';
         echo '</div>';
