@@ -1,8 +1,16 @@
 <?php
 
+$show_id = intval($_GET['show_id']);
+if (empty($show_id)) {
+    http_response_code(404);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => true, 'msg' => 'Missing show id']);
+    exit();
+}
+
 // build icon paths
-$icon_256 = "icons/pwa-icon-256.png";
-$icon_512 = "icons/pwa-icon-512.png";
+$icon_256 = "icons/pwa-icon-256.png?{$show_id}";
+$icon_512 = "icons/pwa-icon-512.png?{$show_id}";
 
 $protocol = "https";
 if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
@@ -10,10 +18,12 @@ if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
 } elseif (!empty($_SERVER['REQUEST_SCHEME'])) {
     $protocol = $_SERVER['REQUEST_SCHEME'];
 }
-$start_url = $protocol . "://" . htmlspecialchars($_SERVER['HTTP_HOST']) . "/app/?show_id=" . intval($_GET['show_id']);
+
+$scope = "/app/?show_id={$show_id}";
+$start_url = $protocol . "://" . htmlspecialchars($_SERVER['HTTP_HOST']) . $scope;
 $header_color = '#ffffff';
 $background_color = '#ffffff';
-$theme_color = '#ffffff';
+$theme_color = '#000000';
 
 $name = 'Podcast';
 if (isset($_GET['title'])) {
@@ -28,6 +38,7 @@ $manifest = [
     "start_url" => $start_url,
     "display" => "standalone",
     "orientation" => "any",
+    "scope" => $scope,
     "background_color" => $header_color,
     "theme_color" => $theme_color,
     "icons" => [

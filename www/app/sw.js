@@ -1,20 +1,23 @@
 // Service Worker with Proxy Support
 const CACHE_VERSION = 'v3';
-const CACHE_NAME = `podcast-cache-${CACHE_VERSION}`;
-const API_CACHE_NAME = `api-cache-${CACHE_VERSION}`;
+const SHOW_ID = new URL(location).searchParams.get('show_id');
+const CACHE_ID_VERSION = `${CACHE_VERSION}-${SHOW_ID}`;
+const CACHE_NAME = `podsnap-cache-${CACHE_ID_VERSION}`;
+const API_CACHE_NAME = `api-cache-${CACHE_ID_VERSION}`;
 
 // Files to cache on install
 const PRE_CACHE = [
     '/',
-    '/app/index.php',
+    `/app/?show_id=${SHOW_ID}`,
     '/app/style.css',
     '/darkMode.js',
-    '/app/icons/pwa-icon-256.png',
-    '/app/icons/pwa-icon-512.png'
+    `/app/icons/pwa-icon-256.png?${SHOW_ID}`,
+    `/app/icons/pwa-icon-512.png?${SHOW_ID}`
 ];
 
 // Install Event
 self.addEventListener('install', (event) => {
+    
     event.waitUntil(
         caches.open(CACHE_NAME)
             .then(cache => cache.addAll(PRE_CACHE))
