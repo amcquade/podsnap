@@ -3,7 +3,8 @@ FROM php:8.3-apache
 
 # Install additional PHP extensions if needed
 RUN apt-get update && apt-get install -y \
-    zip unzip curl libpng-dev libonig-dev libxml2-dev
+    zip unzip curl libpng-dev libonig-dev libxml2-dev \
+    && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Enable Apache modules
 RUN a2enmod rewrite

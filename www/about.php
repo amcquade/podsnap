@@ -22,13 +22,13 @@ require_once 'header.php';
                 <div class="text-center">
                     <i class="bi bi-search feature-icon"></i>
                 </div>
-                <h3 class="text-center">PodSnap</h3>
-                <p>
+                <h3 class="card-title text-center">PodSnap</h3>
+                <p class="card-text">
                     This is a specialized search engine powered by the Podcast Index,
                     the largest open podcast database. It allows you to discover and
                     explore podcasts from across the web.
                 </p>
-                <p>
+                <p class="card-text">
                     The Podcast Index provides comprehensive metadata and episode information,
                     giving you access to podcasts that may not be available in commercial directories.
                 </p>
@@ -40,17 +40,17 @@ require_once 'header.php';
                 <div class="text-center">
                     <i class="bi bi-phone feature-icon"></i>
                 </div>
-                <h3 class="text-center">Install Any Podcast as an App</h3>
-                <p>
+                <h3 class="card-title text-center">Install Any Podcast as an App</h3>
+                <p class="card-text">
                     Our unique feature allows you to install any podcast as a standalone
                     Progressive Web App (PWA) on your device. This means:
                 </p>
-                <ul>
+                <ul class="card-text">
                     <li>One-tap access from your home screen</li>
                     <li>No app store required</li>
                     <li>Lightweight and fast</li>
                 </ul>
-                <p>
+                <p class="card-text">
                     When you find a podcast you love, simply use the "Install App" button
                     to add it to your device like a native application.
                 </p>
@@ -62,16 +62,16 @@ require_once 'header.php';
                 <div class="text-center">
                     <i class="bi bi-code-slash feature-icon"></i>
                 </div>
-                <h3 class="text-center">Open & Transparent</h3>
-                <p>
+                <h3 class="card-title text-center">Open & Transparent</h3>
+                <p class="card-text">
                     This project is open source and built on open standards. We believe in:
                 </p>
-                <ul>
+                <ul class="card-text">
                     <li>Open access to podcasting</li>
                     <li>No tracking or user profiling</li>
                     <li>Respect for podcasters' content</li>
                 </ul>
-                <p class="text-center mt-4">
+                <p class="card-text text-center mt-4">
                     <a href="https://github.com/yourusername/yourrepo" class="btn btn-primary" target="_blank">
                         <i class="bi bi-github"></i> View on GitHub
                     </a>
@@ -83,8 +83,5 @@ require_once 'header.php';
 
 <?php require_once 'footer.php'; ?>
 
-<!-- Same scripts as your main page for consistency -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="darkMode.js"></script>
 </body>
 </html>

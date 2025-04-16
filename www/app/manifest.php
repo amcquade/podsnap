@@ -9,36 +9,31 @@ if (empty($show_id)) {
 }
 
 // build icon paths
-$icon_256 = "icons/pwa-icon-256.png?{$show_id}";
-$icon_512 = "icons/pwa-icon-512.png?{$show_id}";
+$icon_256 = "icons/pwa-icon-256.png?show_id={$show_id}";
+$icon_512 = "icons/pwa-icon-512.png?show_id={$show_id}";
 
-$protocol = "https";
-if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
-    $protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
-} elseif (!empty($_SERVER['REQUEST_SCHEME'])) {
-    $protocol = $_SERVER['REQUEST_SCHEME'];
-}
+$protocol = !empty($_SERVER['HTTP_X_FORWARDED_PROTO']) 
+    ? $_SERVER['HTTP_X_FORWARDED_PROTO'] 
+    : ($_SERVER['REQUEST_SCHEME'] ?? 'https');
 
 $scope = "/app/?show_id={$show_id}";
-$start_url = $protocol . "://" . htmlspecialchars($_SERVER['HTTP_HOST']) . $scope;
+$start_url = $protocol . "://" . htmlspecialchars($_SERVER['HTTP_HOST']) . $scope . "&standalone=true";
 $header_color = '#ffffff';
 $background_color = '#ffffff';
 $theme_color = '#000000';
 
-$name = 'Podcast';
-if (isset($_GET['title'])) {
-    $name = htmlspecialchars(urldecode($_GET['title']));
-}
+$name = htmlspecialchars(urldecode($_GET['title'] ?? 'Podcast'));
 $description = "Podcast App for the '{$name}' show";
 
 $manifest = [
-    "name" => "$name",
-    "short_name" => "$name",
+    "name" => $name,
+    "short_name" => $name,
     "description" => $description,
     "start_url" => $start_url,
     "display" => "standalone",
     "orientation" => "any",
     "scope" => $scope,
+    "id" => $start_url,
     "background_color" => $header_color,
     "theme_color" => $theme_color,
     "icons" => [
@@ -53,6 +48,7 @@ $manifest = [
             "type" => "image/png",
         ],
     ],
+    "prefer_related_applications" => false
 ];
 
 

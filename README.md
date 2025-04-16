@@ -141,10 +141,10 @@ Distributed under the GNU General Public License v3.0. See `LICENSE` for more in
 - [Podcast Index](https://podcastindex.org/) for their open podcast API
 - [Lando](https://lando.dev/) for local development environment
 - [HTMX](https://htmx.org/) for lightweight AJAX functionality
+- [Howler.js](https://howlerjs.com/) audio player
 
 
 ### Future features / TODOs
-- setup hosting 
 - played episodes list
 - notifications for new episodes
 - offline playback 

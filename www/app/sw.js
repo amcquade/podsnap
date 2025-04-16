@@ -1,6 +1,7 @@
 // Service Worker with Proxy Support
 const CACHE_VERSION = 'v3';
 const SHOW_ID = new URL(location).searchParams.get('show_id');
+const HOST = location.hostname;
 const CACHE_ID_VERSION = `${CACHE_VERSION}-${SHOW_ID}`;
 const CACHE_NAME = `podsnap-cache-${CACHE_ID_VERSION}`;
 const API_CACHE_NAME = `api-cache-${CACHE_ID_VERSION}`;

@@ -46,9 +46,6 @@ require_once 'header.php';
         </div>
     </div>
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="darkMode.js"></script>
     <script>
         // Enhance HTMX requests
         document.body.addEventListener('htmx:beforeRequest', function() {

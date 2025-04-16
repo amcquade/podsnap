@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add howler.js player
 - Cleanup styling
 - Allow multi pwa install 
+- Allow subdomains for apps
 
 ## [1.0.2] - 2025-04-14
 - Add pwa install tracking

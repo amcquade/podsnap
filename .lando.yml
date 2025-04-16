@@ -8,7 +8,8 @@ config:
   sslExpose: false
 proxy:
   appserver:
-    - podsnap.lndo.site
+    - "podsnap.lndo.site"
+    - "*.podsnap.lndo.site"
 services:
   appserver:
     build_as_root:

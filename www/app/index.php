@@ -135,9 +135,6 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
 
 
 
-    <!-- Bootstrap JS Bundle with Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../darkMode.js"></script>
     <script>
         // Audio Player Functionality
         const audioPlayer = document.getElementById('audioPlayer');
@@ -298,10 +295,11 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
             installButton.classList.add('d-none');
         });
 
+        let showId = new URL(location).searchParams.get('show_id');
         // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
-                navigator.serviceWorker.register('/app/sw.js')
+                navigator.serviceWorker.register(`/app/sw.js?show_id=${showId}`)
                     .then(registration => {
                         console.log('ServiceWorker registration successful');
                     })

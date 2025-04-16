@@ -1,15 +1,26 @@
-<IfModule mod_rewrite.c>
-    RewriteEngine On
+RewriteEngine On
+
+<IfModule mod_rewrite.c>    
     RewriteBase /
 
     # Remove .php extension from about
     RewriteRule ^about$ about.php [NC,L]
-
 </IfModule>
 
-<Files ".env">
+# Allow requests from subdomains
+RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.lndo\.site$ [NC]
+RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.onrender\.com$ [NC]
+RewriteRule ^ - [E=SUBDOMAIN:%1]
+
+# Redirect to index.php for routing
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [L]
+
+# Deny access to sensitive files
+<FilesMatch "\.(env|htaccess|git|bak|sql)$">
     Require all denied
-</Files>
+</FilesMatch>
 
 <IfModule mod_headers.c>
     # Enable range requests for audio/video
@@ -18,7 +29,6 @@
     </FilesMatch>
 </IfModule>
 
-# TODO
-# Error documents
-#ErrorDocument 404 /404.html
-#ErrorDocument 403 /403.html
+# TODO -> Error documents
+# ErrorDocument 404 /404.html
+# ErrorDocument 403 /403.html
