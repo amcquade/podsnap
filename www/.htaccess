@@ -7,6 +7,12 @@ RewriteEngine On
     RewriteRule ^about$ about.php [NC,L]
 </IfModule>
 
+# Check if the host is podsnap.onrender.com
+RewriteCond %{HTTP_HOST} ^podsnap\.onrender\.com$ [NC]
+
+# Redirect to podsnap.xyz
+RewriteRule ^(.*)$ https://podsnap.xyz/$1 [L,R=301]
+
 # Allow requests from subdomains
 RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.lndo\.site$ [NC]
 RewriteCond %{HTTP_HOST} ^([a-zA-Z0-9-]+)\.podsnap\.onrender\.com$ [NC]

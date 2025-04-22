@@ -105,7 +105,7 @@ docker run -p 8080:80 --name my-lando-container my-lando-app
 docker stop my-lando-container
 docker rm my-lando-container
 ```
-### connect to (running) container for debugging
+### connect to (running) container for debugging (in a new terminal tab)
 ```bash
 docker exec -it my-lando-container bash
 ```
