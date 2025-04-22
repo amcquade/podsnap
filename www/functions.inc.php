@@ -41,8 +41,10 @@ function makeApiCall($uri)
     // Hash them to get the Authorization token
     $hash = sha1($ApiKey . $ApiSecret . $apiHeaderTime);
 
+    require_once dirname(__FILE__) . '/version.php';
+
     $headers = [
-        "User-Agent: ppwa/0.1",
+        "User-Agent: podsnap/" . ($version ?? '1.0.0'),
         "X-Auth-Key: $ApiKey",
         "X-Auth-Date: $apiHeaderTime",
         "Authorization: $hash"
