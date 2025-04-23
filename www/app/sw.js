@@ -62,3 +62,45 @@ async function cacheFirst(request, cacheName) {
     const cached = await cache.match(request);
     return cached || fetch(request);
 }
+
+// Store subscription in cache
+async function storeSubscription(subscription) {
+    const cache = await caches.open(CACHE_NAME);
+    await cache.put(
+        'subscription',
+        new Response(JSON.stringify(subscription))
+    );
+}
+
+// Retrieve subscription from cache
+async function getStoredSubscription() {
+    const cache = await caches.open(CACHE_NAME);
+    const response = await cache.match('subscription');
+    return response ? response.json() : null;
+}
+
+// Handle push subscription
+self.addEventListener('message', async (event) => {
+    if (event.data.type === 'STORE_SUBSCRIPTION') {
+        await storeSubscription(event.data.subscription);
+    }
+});
+
+// Push notification handler
+self.addEventListener('push', (event) => {
+    const data = event.data.json();
+    event.waitUntil(
+        self.registration.showNotification(data.title, {
+            body: data.body,
+            icon: data.icon,
+            data: { url: data.url }
+        })
+    );
+});
+
+self.addEventListener('notificationclick', (event) => {
+    event.notification.close();
+    event.waitUntil(
+        clients.openWindow(event.notification.data.url)
+    );
+});

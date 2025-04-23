@@ -150,6 +150,8 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
         const currentTimeDisplay = document.getElementById('current-time');
         const durationDisplay = document.getElementById('duration');
 
+
+
         var sound;
 
         // Play/Pause Toggle
@@ -296,15 +298,77 @@ require_once dirname(dirname(__FILE__)) . '/header.php';
         });
 
         let showId = new URL(location).searchParams.get('show_id');
+
+        // push notification
+        const publicVapidKey = '<?php echo $Env['VAPID_PUBLIC_KEY'] ?? ''; ?>';
+
         // Register Service Worker
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register(`/app/sw.js?show_id=${showId}`)
                     .then(registration => {
-                        console.log('ServiceWorker registration successful');
+                        console.log('ServiceWorker registration successful:', registration);
+
+                        // Ensure pushManager is supported
+                        if (!registration.pushManager) {
+                            throw new Error('PushManager is not supported.');
+                        }
+
+                        return registration.pushManager.subscribe({
+                            userVisibleOnly: true,
+                            applicationServerKey: urlBase64ToUint8Array(publicVapidKey)
+                        });
                     })
-                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+                    .then(subscription => {
+                        console.log('Push subscription successful:', subscription);
+
+                        // Convert subscription to a plain object that can be cloned
+                        const subscriptionData = {
+                            endpoint: subscription.endpoint,
+                            keys: {
+                                p256dh: Array.from(new Uint8Array(subscription.getKey('p256dh'))),
+                                auth: Array.from(new Uint8Array(subscription.getKey('auth')))
+                            }
+                        };
+
+                        // Send subscription to the service worker
+                        navigator.serviceWorker.ready.then(serviceWorker => {
+                            serviceWorker.active?.postMessage({
+                                type: 'STORE_SUBSCRIPTION',
+                                subscriptionData
+                            });
+                        });
+
+                        // Send subscription to the server
+                        return fetch('/api/subscribe.php', {
+                            method: 'POST',
+                            body: JSON.stringify(subscriptionData),
+                            headers: { 'Content-Type': 'application/json' }
+                        });
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to subscribe on the server.');
+                        }
+                        console.log('Subscription saved on server:', response);
+                    })
+                    .catch(err => {
+                        console.error('Error during service worker or subscription process:', err);
+                    });
             });
+        }
+
+        function urlBase64ToUint8Array(base64String) {
+            const padding = '='.repeat((4 - base64String.length % 4) % 4);
+            const base64 = (base64String + padding)
+                .replace(/-/g, '+')
+                .replace(/_/g, '/');
+            const rawData = atob(base64);
+            const outputArray = new Uint8Array(rawData.length);
+            for (let i = 0; i < rawData.length; ++i) {
+                outputArray[i] = rawData.charCodeAt(i);
+            }
+            return outputArray;
         }
     </script>
 </body>
